@@ -106,13 +106,15 @@ def format_fileName(date, df):
         raise ValueError("Project name cannot be empty for file naming.")
     project_name = df["project_name"]
     project_name = df.get("project_name", "UnknownProject")
-    if df["custom_name"] != "":
+    if df["custom_name"] != "" and not pd.isna(df["custom_name"]):
         project_name = df["custom_name"]
+        print(f"Using custom name {project_name} for project {df['project_name']} in file naming.")
     # format file name by removing any underscores in project name
     # check to see if the project ends with REMOTE_ONLY, replace it with just R
+    print(f"Original project name: {project_name}")
     project_name = re.sub(r'_REMOTE-ONLY$', '', project_name)
     project_name = re.sub(r'[_\s]+', '', project_name)
-    project_name = project_name.capitalize()
+    project_name = project_name[0].upper() + project_name[1:] if len(project_name) > 0 else project_name
     project_type = df.get("project_type", "DATA")
     return f"{project_name}_{project_type}_{date_str}.csv"
 
