@@ -106,6 +106,8 @@ def format_fileName(date, df):
         raise ValueError("Project name cannot be empty for file naming.")
     project_name = df["project_name"]
     project_name = df.get("project_name", "UnknownProject")
+    if df["custom_name"] != "":
+        project_name = df["custom_name"]
     # format file name by removing any underscores in project name
     # check to see if the project ends with REMOTE_ONLY, replace it with just R
     project_name = re.sub(r'_REMOTE-ONLY$', '', project_name)
